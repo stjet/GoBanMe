@@ -1,0 +1,10 @@
+#error-content {
+  display: none;
+}
+#site-info {
+  display: none;
+}
+#log-out-1, #log-out-2 {
+  float: right;
+  color: grey;
+}

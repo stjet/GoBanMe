@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css"/>
+    <script type="text/javascript"  src="banano.js"></script>
+  </head>
+<body>
+  <div id="popup-content">
+    <span id="debug"></span>
+    <div id="seed-enter">
+      <label for="seed">Seed: </label><input type="text" id="seed"></input>
+      <br>
+      <input type="button" value="Go" id="go-button">
+    </div>
+    <div id="site-info">
+      <span id="log-out-1">Log Out</span>
+      <label for="author">Author: </label><span id="author"></span>
+      <br>
+      <label for="description">Description: </label><span id="description"></span>
+      <br>
+      <label for="address">Address: </label><span id="address"></span>
+      <br>
+      <label for="suggested-donation">Suggested Donation: </label><span id="suggested-donation"></span>
+      <br>
+      <input type="range" min="1" max="100" class="slider" id="pay">
+      <input type="button" value="Send" id="send-button">
+    </div>
+  </div>
+  <div id="error-content">
+    <span id="log-out-2">Log Out</span>
+    <p>This page does not have a banano.json file</p>
+  </div>
+  <script type="text/javascript"  src="popup.js"></script>
+</body>
+</html>
