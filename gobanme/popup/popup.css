@@ -2,9 +2,41 @@
   display: none;
 }
 #site-info {
+  padding: 5px;
   display: none;
 }
 #log-out-1, #log-out-2 {
   float: right;
   color: grey;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+  height: 300px;
+  width: 250px;
+  color: #2A2A2E;
+}
+#seed-input-div {
+  width: 190px;
+  padding: 0px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+#seed {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid black;
+  margin-bottom: 5px;
+  padding-bottom: 1px;
+  width: 90%;
+}
+#seed-enter {
+  margin-top: 105px;
+}
+#go-button {
+  border: none;
+}
+.disabled{
+  pointer-events: none;
 }

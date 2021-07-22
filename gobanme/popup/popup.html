@@ -9,9 +9,14 @@
   <div id="popup-content">
     <span id="debug"></span>
     <div id="seed-enter">
-      <label for="seed">Seed: </label><input type="text" id="seed"></input>
+      <div id="seed-input-div">
+        <input type="text" id="seed" placeholder="Seed"></input>
+        <br>
+        <input type="checkbox" id="i-agree">
+        <label for="i-agree"> I agree that any loss of funds is not the fault of GoBanMe and that GoBanMe is beta software</label><br>
+      </div>
       <br>
-      <input type="button" value="Go" id="go-button">
+      <center><input type="button" value="Go" id="go-button"></center>
     </div>
     <div id="site-info">
       <span id="log-out-1">Log Out</span>
@@ -24,6 +29,7 @@
       <label for="suggested-donation">Suggested Donation: </label><span id="suggested-donation"></span>
       <br>
       <input type="range" min="1" max="100" class="slider" id="pay">
+      <input type="text" id="pay-1">
       <input type="button" value="Send" id="send-button">
     </div>
   </div>
