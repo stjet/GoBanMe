@@ -40,3 +40,6 @@ body {
 .disabled{
   pointer-events: none;
 }
+#balance-too-low {
+  color: red;
+}

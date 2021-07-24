@@ -6,6 +6,7 @@ browser.storage.local.get('seed').then((item) => {
     get_info();
   }
 });
+document.getElementById("balance-too-low").style.display = "none";
 document.getElementById("log-out-1").onclick = log_out;
 document.getElementById("log-out-2").onclick = log_out;
 document.getElementById("go-button").onclick = go;
@@ -70,8 +71,11 @@ function go() {
   }
 }
 async function send_banano(address, value) {
+  document.getElementById("balance-too-low").style.display = "none";
   let seed = await browser.storage.local.get('seed');
-  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed.seed, 0, address, value) 
+  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed.seed, 0, address, value).catch(err => {
+    document.getElementById("balance-too-low").style.display = "block";
+  });
 }
 function pay() {
   if (document.getElementById("pay").style.display == "block") {
