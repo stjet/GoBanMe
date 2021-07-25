@@ -1,11 +1,5 @@
 browser.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
-browser.storage.local.get('seed').then((item) => {
-  if (JSON.stringify(item) != '{}') {
-    document.getElementById("seed-enter").style.display = "none";
-    document.getElementById("site-info").style.display = "block";
-    get_info();
-  }
-});
+let seed;
 document.getElementById("balance-too-low").style.display = "none";
 document.getElementById("log-out-1").onclick = log_out;
 document.getElementById("log-out-2").onclick = log_out;
@@ -35,7 +29,8 @@ function get_info() {
           document.getElementById("error-content").style.display = "none";
           document.getElementById("site-info").style.display = "block";
           content = JSON.parse(this.responseText);
-          document.getElementById("address").innerText = content['address'];
+          document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
+          document.getElementById("copy-address").onclick = navigator.clipboard.writeText(content['address']);
           document.getElementById("description").innerText = content['description'];
           document.getElementById("suggested-donation").innerText = content['suggested_donation'];
           document.getElementById("author").innerText = content['author'];
@@ -66,14 +61,13 @@ function display_amount() {
 function go() {
   if (document.getElementById('i-agree').checked) {
     document.getElementById("seed-enter").style.display = "none";
-    browser.storage.local.set({'seed':document.getElementById("seed").value});
+    seed = document.getElementById("seed").value;
     get_info();
   }
 }
 async function send_banano(address, value) {
   document.getElementById("balance-too-low").style.display = "none";
-  let seed = await browser.storage.local.get('seed');
-  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed.seed, 0, address, value).catch(err => {
+  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
     document.getElementById("balance-too-low").style.display = "block";
   });
 }
@@ -85,7 +79,7 @@ function pay() {
   }
 }
 async function log_out() {
-  await browser.storage.local.remove('seed');
+  seed = undefined;
   document.getElementById("seed-enter").style.display = "block";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("error-content").style.display = "none";
