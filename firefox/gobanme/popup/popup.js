@@ -6,6 +6,7 @@ document.getElementById("log-out-2").onclick = log_out;
 document.getElementById("go-button").onclick = go;
 document.getElementById("send-button").onclick = pay;
 document.getElementById("pay").onchange = display_amount;
+document.getElementById("tabs").style.display = "none";
 function get_info() {
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
@@ -26,8 +27,10 @@ function get_info() {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
         if (this.status == 200) {
+          document.getElementById("tabs").style.display = "block";
           document.getElementById("error-content").style.display = "none";
           document.getElementById("site-info").style.display = "block";
+          document.getElementById("site-tab").classList.add("selected-tab");
           document.getElementById("discover-tab").classList.add("unselected-tab");
           document.getElementById("settings-tab").classList.add("unselected-tab");
           content = JSON.parse(this.responseText);
@@ -48,6 +51,7 @@ function get_info() {
           }
           document.getElementById("send-button").value = "Send "+content['suggested_donation']+" Bananos";
         } else {
+          document.getElementById("tabs").style.display = "none";
           document.getElementById("error-content").style.display = "block";
           document.getElementById("site-info").style.display = "none";
         }
@@ -84,5 +88,6 @@ async function log_out() {
   seed = undefined;
   document.getElementById("seed-enter").style.display = "block";
   document.getElementById("site-info").style.display = "none";
+  document.getElementById("tabs").style.display = "none";
   document.getElementById("error-content").style.display = "none";
 }
