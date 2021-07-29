@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "GoBanMe",
-  "version": "0.2",
+  "version": "0.3",
 
   "description": "Enables users to tip website owners banano",
   "homepage_url": "https://github.com/jetstream0/GoBanMe",
@@ -17,7 +17,7 @@
   ],
 
   "browser_action": {
-    "default_icon": "icon/gobanme-32.png",
+    "default_icon": "icons/gobanme-32.png",
     "theme_icons": [{
       "light": "icons/gobanme-32.png",
       "dark": "icons/gobanme-32.png",
