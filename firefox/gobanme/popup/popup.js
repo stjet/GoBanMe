@@ -28,6 +28,8 @@ function get_info() {
         if (this.status == 200) {
           document.getElementById("error-content").style.display = "none";
           document.getElementById("site-info").style.display = "block";
+          document.getElementById("discover-tab").classList.add("unselected-tab");
+          document.getElementById("settings-tab").classList.add("unselected-tab");
           content = JSON.parse(this.responseText);
           document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
           document.getElementById("copy-address").onclick = navigator.clipboard.writeText(content['address']);
