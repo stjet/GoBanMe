@@ -10,6 +10,8 @@ document.getElementById("tabs").style.display = "none";
 document.getElementById("site-tab").onclick = switch_to_site_tab;
 document.getElementById("discover-tab").onclick = switch_to_discover_tab;
 document.getElementById("wallet-tab").onclick = switch_to_wallet_tab;
+document.getElementById("wallet").style.display = "none";
+document.getElementById("discover").style.display = "none";
 function get_info() {
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
@@ -123,8 +125,8 @@ function switch_to_discover_tab() {
   document.getElementById("site-tab").classList.remove("selected-tab")
   document.getElementById("discover-tab").classList.add("selected-tab");
   document.getElementById("discover-tab").classList.remove("unselected-tab")
-  document.getElementById("wallet-tab").classList.remove("unselected-tab");
-  document.getElementById("wallet-tab").classList.add("selected-tab");
+  document.getElementById("wallet-tab").classList.remove("selected-tab");
+  document.getElementById("wallet-tab").classList.add("unselected-tab");
   document.getElementById("wallet").style.display = "none";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("discover").style.display = "block";
