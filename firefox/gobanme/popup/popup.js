@@ -40,7 +40,8 @@ function get_info() {
           document.getElementById("discover").style.display = "none";
           content = JSON.parse(this.responseText);
           document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
-          document.getElementById("copy-address").onclick = navigator.clipboard.writeText(content['address']);
+          document.getElementById("true-address").innerText = content['address'];
+          document.getElementById("copy-address").onclick = copy_address;
           document.getElementById("description").innerText = content['description'];
           document.getElementById("suggested-donation").innerText = content['suggested_donation'];
           document.getElementById("author").innerText = content['author'];
@@ -73,22 +74,28 @@ function display_amount() {
 }
 function go() {
   if (document.getElementById('i-agree').checked) {
-    document.getElementById("seed-enter").style.display = "none";
     seed = document.getElementById("seed").value;
-    get_info();
+    if (browser.bananocoinBananojs.bananoUtil.isSeedValid(seed).valid) {
+      document.getElementById("seed-enter").style.display = "none";
+      get_info();
+    }
   }
+}
+function copy_address() {
+  navigator.clipboard.writeText(document.getElementById("true-address").innerText);
 }
 async function send_banano(address, value) {
   document.getElementById("balance-too-low").style.display = "none";
   await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
+    console.log(err)
     document.getElementById("balance-too-low").style.display = "block";
   });
 }
 function pay() {
   if (document.getElementById("pay").style.display == "block") {
-    send_banano(document.getElementById("address").innerText, Number(document.getElementById("pay").value));
+    send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay").value));
   } else {
-    send_banano(document.getElementById("address").innerText, Number(document.getElementById("pay-1").value));
+    send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay-1").value));
   }
 }
 async function log_out() {
