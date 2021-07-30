@@ -6,6 +6,10 @@ document.getElementById("log-out-2").onclick = log_out;
 document.getElementById("go-button").onclick = go;
 document.getElementById("send-button").onclick = pay;
 document.getElementById("pay").onchange = display_amount;
+document.getElementById("tabs").style.display = "none";
+document.getElementById("site-tab").onclick = switch_to_site_tab;
+document.getElementById("discover-tab").onclick = switch_to_discover_tab;
+document.getElementById("wallet-tab").onclick = switch_to_wallet_tab;
 function get_info() {
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
@@ -26,11 +30,18 @@ function get_info() {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
         if (this.status == 200) {
+          document.getElementById("tabs").style.display = "block";
           document.getElementById("error-content").style.display = "none";
           document.getElementById("site-info").style.display = "block";
+          document.getElementById("site-tab").classList.add("selected-tab");
+          document.getElementById("discover-tab").classList.add("unselected-tab");
+          document.getElementById("wallet-tab").classList.add("unselected-tab");
+          document.getElementById("wallet").style.display = "none";
+          document.getElementById("discover").style.display = "none";
           content = JSON.parse(this.responseText);
           document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
-          document.getElementById("copy-address").onclick = navigator.clipboard.writeText(content['address']);
+          document.getElementById("true-address").innerText = content['address'];
+          document.getElementById("copy-address").onclick = copy_address;
           document.getElementById("description").innerText = content['description'];
           document.getElementById("suggested-donation").innerText = content['suggested_donation'];
           document.getElementById("author").innerText = content['author'];
@@ -46,8 +57,11 @@ function get_info() {
           }
           document.getElementById("send-button").value = "Send "+content['suggested_donation']+" Bananos";
         } else {
+          document.getElementById("tabs").style.display = "none";
           document.getElementById("error-content").style.display = "block";
           document.getElementById("site-info").style.display = "none";
+          document.getElementById("wallet").style.display = "none";
+          document.getElementById("discover").style.display = "none";
         }
       }
     }
@@ -60,27 +74,69 @@ function display_amount() {
 }
 function go() {
   if (document.getElementById('i-agree').checked) {
-    document.getElementById("seed-enter").style.display = "none";
     seed = document.getElementById("seed").value;
-    get_info();
+    if (browser.bananocoinBananojs.bananoUtil.isSeedValid(seed).valid) {
+      document.getElementById("seed-enter").style.display = "none";
+      get_info();
+    }
   }
+}
+function copy_address() {
+  navigator.clipboard.writeText(document.getElementById("true-address").innerText);
 }
 async function send_banano(address, value) {
   document.getElementById("balance-too-low").style.display = "none";
   await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
+    console.log(err)
     document.getElementById("balance-too-low").style.display = "block";
   });
 }
 function pay() {
   if (document.getElementById("pay").style.display == "block") {
-    send_banano(document.getElementById("address").innerText, Number(document.getElementById("pay").value));
+    send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay").value));
   } else {
-    send_banano(document.getElementById("address").innerText, Number(document.getElementById("pay-1").value));
+    send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay-1").value));
   }
 }
 async function log_out() {
   seed = undefined;
   document.getElementById("seed-enter").style.display = "block";
   document.getElementById("site-info").style.display = "none";
+  document.getElementById("wallet").style.display = "none";
+  document.getElementById("discover").style.display = "none";
+  document.getElementById("tabs").style.display = "none";
   document.getElementById("error-content").style.display = "none";
+}
+function switch_to_site_tab() {
+  document.getElementById("site-tab").classList.add("selected-tab");
+  document.getElementById("site-tab").classList.remove("unselected-tab")
+  document.getElementById("discover-tab").classList.add("unselected-tab");
+  document.getElementById("discover-tab").classList.remove("selected-tab")
+  document.getElementById("wallet-tab").classList.remove("selected-tab");
+  document.getElementById("wallet-tab").classList.add("unselected-tab");
+  document.getElementById("wallet").style.display = "none";
+  document.getElementById("site-info").style.display = "block";
+  document.getElementById("discover").style.display = "none";
+}
+function switch_to_discover_tab() {
+  document.getElementById("site-tab").classList.add("unselected-tab");
+  document.getElementById("site-tab").classList.remove("selected-tab")
+  document.getElementById("discover-tab").classList.add("selected-tab");
+  document.getElementById("discover-tab").classList.remove("unselected-tab")
+  document.getElementById("wallet-tab").classList.remove("unselected-tab");
+  document.getElementById("wallet-tab").classList.add("selected-tab");
+  document.getElementById("wallet").style.display = "none";
+  document.getElementById("site-info").style.display = "none";
+  document.getElementById("discover").style.display = "block";
+}
+function switch_to_wallet_tab() {
+  document.getElementById("site-tab").classList.add("unselected-tab");
+  document.getElementById("site-tab").classList.remove("selected-tab")
+  document.getElementById("discover-tab").classList.add("unselected-tab");
+  document.getElementById("discover-tab").classList.remove("selected-tab")
+  document.getElementById("wallet-tab").classList.remove("unselected-tab");
+  document.getElementById("wallet-tab").classList.add("selected-tab");
+  document.getElementById("wallet").style.display = "block";
+  document.getElementById("site-info").style.display = "none";
+  document.getElementById("discover").style.display = "none";
 }

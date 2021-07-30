@@ -12,8 +12,8 @@
 body {
   padding: 0px;
   margin: 0px;
-  height: 300px;
-  width: 250px;
+  height: 290px;
+  width: 245px;
   color: #2A2A2E;
 }
 #seed-input-div {
@@ -42,4 +42,23 @@ body {
 }
 #balance-too-low {
   color: red;
+}
+.tab {
+  padding: 2px;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+#tabs {
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.selected-tab {
+  font-weight: bold;
+}
+.unselected-tab {
+  border-bottom: 2px solid black;
+}
+#true-address {
+  display: none;
 }
