@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "GoBanMe",
-  "version": "0.3",
+  "version": "0.4.1",
 
   "description": "Enables users to tip website owners banano",
   "homepage_url": "https://github.com/jetstream0/GoBanMe",
