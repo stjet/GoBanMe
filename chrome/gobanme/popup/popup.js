@@ -1,4 +1,4 @@
-browser.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
+chrome.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
 let seed;
 document.getElementById("balance-too-low").style.display = "none";
 document.getElementById("log-out-1").onclick = log_out;
@@ -14,7 +14,7 @@ document.getElementById("wallet").style.display = "none";
 document.getElementById("discover").style.display = "none";
 document.getElementById("recieve-pending").onclick = recieve_pending;
 function get_info() {
-  browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
+  chrome.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
     let https = false;
     if (tabs_array[0].url.startsWith("http://")) {
@@ -78,7 +78,7 @@ function display_amount() {
 function go() {
   if (document.getElementById('i-agree').checked) {
     seed = document.getElementById("seed").value;
-    if (browser.bananocoinBananojs.bananoUtil.isSeedValid(seed).valid) {
+    if (chrome.bananocoinBananojs.bananoUtil.isSeedValid(seed).valid) {
       document.getElementById("seed-enter").style.display = "none";
       get_info();
     }
@@ -89,7 +89,7 @@ function copy_address() {
 }
 async function send_banano(address, value) {
   document.getElementById("balance-too-low").style.display = "none";
-  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
+  await chrome.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
     console.log(err)
     document.getElementById("balance-too-low").style.display = "block";
   });
@@ -142,14 +142,14 @@ function switch_to_wallet_tab() {
   document.getElementById("wallet").style.display = "block";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("discover").style.display = "none";
-  browser.bananocoinBananojs.getBananoAccountFromSeed(seed, 0).then(async (current_address) => {
+  chrome.bananocoinBananojs.getBananoAccountFromSeed(seed, 0).then(async (current_address) => {
     document.getElementById("wallet-address").innerText = current_address;
-    let raw = await browser.bananocoinBananojs.getAccountBalanceRaw(current_address)
-    let parts = await browser.bananocoinBananojs.getBananoPartsFromRaw(raw);
+    let raw = await chrome.bananocoinBananojs.getAccountBalanceRaw(current_address)
+    let parts = await chrome.bananocoinBananojs.getBananoPartsFromRaw(raw);
     document.getElementById("balance").innerText = parts.banano;
   })
 }
 async function recieve_pending() {
-  let rep = await browser.bananocoin.bananojs.bananodeApi.getAccountRepresentative(document.getElementById("wallet-address").innerText);
-  await browser.bananocoinBananojs.receiveBananoDepositsForSeed(seed, 0, rep);
+  let rep = await chrome.bananocoin.bananojs.bananodeApi.getAccountRepresentative(document.getElementById("wallet-address").innerText);
+  await chrome.bananocoinBananojs.receiveBananoDepositsForSeed(seed, 0, rep);
 }
