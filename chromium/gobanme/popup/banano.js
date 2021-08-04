@@ -318,7 +318,7 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
   // Adapted from the reference implementation in RFC7693
   // Ported to Javascript by DC - https://github.com/dcposch
 
-  const util = require('./blake2b-util.js');
+  const util = require('./blake2b-util.js.js');
 
   // 64-bit unsigned addition
   // Sets v[a,a+1] += v[b,b+1]
@@ -609,7 +609,7 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
   const exports = (() => {
     const exports = {};
     // FINISHED TOP nodejs/browser hack
-    const blake = require('../../libraries/blake2b/blake2b.js');
+    const blake = require('../../libraries/blake2b/blake2b.js.js');
 
     // Ported in 2014 by Dmitry Chestnykh and Devi Mandiri.
     // Public domain.
@@ -2715,9 +2715,9 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
   if (typeof BigInt === 'undefined') {
     return;
   }
-  const blake = require('../../libraries/blake2b/blake2b.js');
+  const blake = require('../../libraries/blake2b/blake2b.js.js');
 
-  const nacl = require('../../libraries/tweetnacl/nacl.js');
+  const nacl = require('../../libraries/tweetnacl/nacl.js.js');
 
   const workMin = BigInt('0xfffffe0000000000');
 
@@ -3969,7 +3969,7 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
 // STARTED TOP nodejs/browser hack
 (function() {
 // FINISHED TOP nodejs/browser hack
-  const bananoUtil = require('./banano-util.js');
+  const bananoUtil = require('./banano-util.js.js');
 
   const MAX_ACCOUNTS_PENDING = 10;
 
@@ -4159,7 +4159,7 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
 // STARTED TOP nodejs/browser hack
 (function() {
 // FINISHED TOP nodejs/browser hack
-  const bananoUtil = require('./banano-util.js');
+  const bananoUtil = require('./banano-util.js.js');
 
   const LOG_WITHDRAW = false;
 
@@ -4226,11 +4226,11 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
 // STARTED TOP nodejs/browser hack
 (function() {
 // FINISHED TOP nodejs/browser hack
-  const nacl = require( '../../libraries/tweetnacl/nacl.js' );
+  const nacl = require( '../../libraries/tweetnacl/nacl.js.js' );
 
-  const bananoUtil = require( './banano-util.js' );
+  const bananoUtil = require( './banano-util.js.js' );
 
-  const blake = require('../../libraries/blake2b/blake2b.js');
+  const blake = require('../../libraries/blake2b/blake2b.js.js');
 
   const LOG_SWEEP_SEED_TO_INDEX = false;
 
@@ -4929,12 +4929,12 @@ chrome.bananocoin.bananojs.https.request = (requestOptions, requestWriterCallbac
 (function() {
 // FINISHED TOP nodejs/browser hack
 
-  const bananoUtil = require('./app/scripts/banano-util.js');
-  const realBananodeApi = require('./app/scripts/bananode-api.js');
-  const camoUtil = require('./app/scripts/camo-util.js');
-  const depositUtil = require('./app/scripts/deposit-util.js');
-  const withdrawUtil = require('./app/scripts/withdraw-util.js');
-  const loggingUtil = require('./app/scripts/logging-util.js');
+  const bananoUtil = require('./app/scripts/banano-util.js.js');
+  const realBananodeApi = require('./app/scripts/bananode-api.js.js');
+  const camoUtil = require('./app/scripts/camo-util.js.js');
+  const depositUtil = require('./app/scripts/deposit-util.js.js');
+  const withdrawUtil = require('./app/scripts/withdraw-util.js.js');
+  const loggingUtil = require('./app/scripts/logging-util.js.js');
 
   const BANANO_PREFIX = 'ban_';
 

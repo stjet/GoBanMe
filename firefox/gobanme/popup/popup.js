@@ -13,6 +13,7 @@ document.getElementById("wallet-tab").onclick = switch_to_wallet_tab;
 document.getElementById("wallet").style.display = "none";
 document.getElementById("discover").style.display = "none";
 document.getElementById("recieve-pending").onclick = recieve_pending;
+document.getElementById("rep-btn").onchange = change_rep;
 function get_info() {
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
@@ -152,4 +153,7 @@ function switch_to_wallet_tab() {
 async function recieve_pending() {
   let rep = await browser.bananocoin.bananojs.bananodeApi.getAccountRepresentative(document.getElementById("wallet-address").innerText);
   await browser.bananocoinBananojs.receiveBananoDepositsForSeed(seed, 0, rep);
+}
+async function change_rep() {
+  await browser.bananocoinBananojs.changeBananoRepresentativeForSeed(seed, 0, document.getElementById("rep").value);
 }
