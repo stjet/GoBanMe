@@ -16,13 +16,13 @@ body {
   width: 240px;
   color: #2A2A2E;
 }
-#seed-input-div {
+.input-div {
   width: 190px;
   padding: 0px;
   margin-left: 30px;
   margin-right: 30px;
 }
-#seed {
+.credential {
   padding: 0;
   margin: 0;
   border: 0;
@@ -33,6 +33,9 @@ body {
 }
 #seed-enter {
   margin-top: 105px;
+}
+#password-enter {
+  margin-top: 130px;
 }
 #go-button {
   border: none;
@@ -65,4 +68,7 @@ body {
 }
 #wallet-address {
   overflow-wrap: break-word;
+}
+#new-seed-btn {
+  color: darkblue;
 }
