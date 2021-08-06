@@ -1,5 +1,6 @@
 chrome.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
 let seed;
+let already_discover = false;
 document.getElementById("balance-too-low").style.display = "none";
 document.getElementById("log-out-1").onclick = log_out;
 document.getElementById("log-out-2").onclick = log_out;
@@ -17,6 +18,7 @@ document.getElementById("recieve-pending").onclick = recieve_pending;
 document.getElementById("rep-btn").onclick = change_rep;
 document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
+document.getElementById("types").onchange = discover_filter;
 chrome.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
@@ -52,7 +54,7 @@ function get_info() {
           document.getElementById("wallet-tab").classList.add("unselected-tab");
           document.getElementById("wallet").style.display = "none";
           document.getElementById("discover").style.display = "none";
-          content = JSON.parse(this.responseText);
+          let content = JSON.parse(this.responseText);
           document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
           document.getElementById("true-address").innerText = content['address'];
           document.getElementById("copy-address").onclick = copy_address;
@@ -133,6 +135,34 @@ function switch_to_discover_tab() {
   document.getElementById("wallet").style.display = "none";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("discover").style.display = "block";
+  if (!already_discover) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        let content = JSON.parse(this.responseText);
+        for (i=0; i < Object.keys(content).length; i++) {
+          let type = Object.keys(content)[i];
+          for (j=0; j < Object.keys(content[type]).length; j++) {
+            let name = Object.keys(content[type])[j];
+            let url = content[type][Object.keys(content[type])[j]]
+            let a = document.createElement('A');
+            a.innerText = name;
+            a.href = url;
+            let div = document.createElement('DIV');
+            div.appendChild(a);
+            div.id = name;
+            div.appendChild(document.createElement('BR'));
+            div.classList.add("discover-site-div");
+            div.classList.add(type);
+            document.getElementById("discover-websites-list").appendChild(div);
+          }
+        }
+      }
+    }
+    xhttp.open("GET", "https://prussia.dev/api/gobanme.json", true);
+    xhttp.send();
+    already_discover = true;
+  }
 }
 function switch_to_wallet_tab() {
   document.getElementById("site-tab").classList.add("unselected-tab");
@@ -178,14 +208,6 @@ function go2() {
 }
 function string_to_uint8(string) {
   return new TextEncoder("utf-8").encode(string);
-  /*
-  var result = [];
-  for(var i = 0; i < string.length; i+=2) {
-    result.push(parseInt(string.substring(i, i + 2), 16));
-  }
-  result = Uint8Array.from(result)
-  return result
-  */
 }
 function uint8_to_string(uint8){
   return new TextDecoder("utf-8").decode(uint8);
@@ -193,6 +215,7 @@ function uint8_to_string(uint8){
 function store_seed() {
   seed = document.getElementById("seed").value;
   let password = document.getElementById("new-password").value;
+  document.getElementById("new-password").value = "";
   let key = chrome.nacl.hash(string_to_uint8(password)).slice(32);
   let nonce = chrome.nacl.randomBytes(24);
   let encrypted = chrome.nacl.secretbox(string_to_uint8(seed), nonce, key);
@@ -201,6 +224,7 @@ function store_seed() {
 }
 async function get_seed() {
   let password = document.getElementById("password").value;
+  document.getElementById("password").value = "";
   let key = chrome.nacl.hash(string_to_uint8(password)).slice(32);
   let nonce = await chrome.storage.local.get("nonce");
   let encrypted = await chrome.storage.local.get("encrypted");
@@ -211,4 +235,21 @@ function enter_new_seed() {
   document.getElementById("password-enter").style.display = "none";
   document.getElementById("seed-enter").style.display = "block";
   chrome.storage.local.remove(["nonce","encrypted"]);
+}
+function discover_filter() {
+  let divs = document.getElementsByClassName("discover-site-div");
+  if (document.getElementById("types").value == "all") {
+    for (i=0; i < divs.length; i++) {
+      divs[i].style.display = "block";
+    }
+  } else {
+    for (i=0; i < divs.length; i++) {
+      divs[i].style.display = "none";
+    }
+    let type_div = document.getElementsByClassName(document.getElementById("types").value);
+    console.log(type_div)
+    for (i=0; i < type_div.length; i++) {
+      type_div[i].style.display = "block";
+    }
+  }
 }

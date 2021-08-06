@@ -72,3 +72,11 @@ body {
 #new-seed-btn {
   color: darkblue;
 }
+#discover {
+  padding-top: 5px;
+  padding-left: 5px;
+}
+#discover-websites-list {
+  height: 198px;
+  overflow: auto;
+}
