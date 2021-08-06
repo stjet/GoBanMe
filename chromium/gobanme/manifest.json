@@ -1,6 +1,6 @@
 {
 
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "GoBanMe",
   "version": "1.0",
 
@@ -12,12 +12,15 @@
   },
 
   "permissions": [
-    "*://*/*",
     "clipboardWrite",
     "storage"
   ],
 
-  "browser_action": {
+  "host_permissions": [
+    "*://*/*"
+  ],
+
+  "action": {
     "default_icon": "icons/gobanme-32.png",
     "theme_icons": [{
       "light": "icons/gobanme-32.png",

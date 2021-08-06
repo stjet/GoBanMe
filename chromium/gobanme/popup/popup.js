@@ -1,4 +1,4 @@
-browser.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
+chrome.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
 let seed;
 let already_discover = false;
 document.getElementById("balance-too-low").style.display = "none";
@@ -19,7 +19,7 @@ document.getElementById("rep-btn").onclick = change_rep;
 document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
 document.getElementById("types").onchange = discover_filter;
-browser.storage.local.get("encrypted").then((e) => {
+chrome.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
     document.getElementById("seed-enter").style.display = "none";
@@ -27,7 +27,7 @@ browser.storage.local.get("encrypted").then((e) => {
 });
 function get_info() {
   console.log(seed);
-  browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
+  chrome.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
     let https = false;
     if (tabs_array[0].url.startsWith("http://")) {
@@ -93,7 +93,7 @@ function copy_address() {
 }
 async function send_banano(address, value) {
   document.getElementById("balance-too-low").style.display = "none";
-  await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
+  await chrome.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
     document.getElementById("balance-too-low").style.display = "block";
   });
 }
@@ -106,7 +106,7 @@ function pay() {
 }
 async function log_out() {
   seed = undefined;
-  await browser.storage.local.remove(["nonce","encrypted"]);
+  await chrome.storage.local.remove(["nonce","encrypted"]);
   document.getElementById("seed-enter").style.display = "block";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("wallet").style.display = "none";
@@ -174,23 +174,23 @@ function switch_to_wallet_tab() {
   document.getElementById("wallet").style.display = "block";
   document.getElementById("site-info").style.display = "none";
   document.getElementById("discover").style.display = "none";
-  browser.bananocoinBananojs.getBananoAccountFromSeed(seed, 0).then(async (current_address) => {
+  chrome.bananocoinBananojs.getBananoAccountFromSeed(seed, 0).then(async (current_address) => {
     document.getElementById("wallet-address").innerText = current_address;
-    let raw = await browser.bananocoinBananojs.getAccountBalanceRaw(current_address)
-    let parts = await browser.bananocoinBananojs.getBananoPartsFromRaw(raw);
+    let raw = await chrome.bananocoinBananojs.getAccountBalanceRaw(current_address)
+    let parts = await chrome.bananocoinBananojs.getBananoPartsFromRaw(raw);
     document.getElementById("balance").innerText = parts.banano;
   })
 }
 async function recieve_pending() {
-  let rep = await browser.bananocoin.bananojs.bananodeApi.getAccountRepresentative(document.getElementById("wallet-address").innerText);
-  await browser.bananocoinBananojs.receiveBananoDepositsForSeed(seed, 0, rep);
+  let rep = await chrome.bananocoin.bananojs.bananodeApi.getAccountRepresentative(document.getElementById("wallet-address").innerText);
+  await chrome.bananocoinBananojs.receiveBananoDepositsForSeed(seed, 0, rep);
 }
 async function change_rep() {
-  await browser.bananocoinBananojs.changeBananoRepresentativeForSeed(seed, 0, document.getElementById("rep").value);
+  await chrome.bananocoinBananojs.changeBananoRepresentativeForSeed(seed, 0, document.getElementById("rep").value);
 }
 function go1() {
   if (document.getElementById('i-agree').checked) {
-    if (browser.bananocoinBananojs.bananoUtil.isSeedValid(document.getElementById("seed").value).valid) {
+    if (chrome.bananocoinBananojs.bananoUtil.isSeedValid(document.getElementById("seed").value).valid) {
       store_seed();
       document.getElementById("seed-enter").style.display = "none";
       get_info();
@@ -199,7 +199,7 @@ function go1() {
 }
 function go2() {
   get_seed().then((s) => {
-    if (browser.bananocoinBananojs.bananoUtil.isSeedValid(s).valid) {
+    if (chrome.bananocoinBananojs.bananoUtil.isSeedValid(s).valid) {
       seed = s;
       document.getElementById("password-enter").style.display = "none";
       get_info();
@@ -216,25 +216,25 @@ function store_seed() {
   seed = document.getElementById("seed").value;
   let password = document.getElementById("new-password").value;
   document.getElementById("new-password").value = "";
-  let key = browser.nacl.hash(string_to_uint8(password)).slice(32);
-  let nonce = browser.nacl.randomBytes(24);
-  let encrypted = browser.nacl.secretbox(string_to_uint8(seed), nonce, key);
+  let key = chrome.nacl.hash(string_to_uint8(password)).slice(32);
+  let nonce = chrome.nacl.randomBytes(24);
+  let encrypted = chrome.nacl.secretbox(string_to_uint8(seed), nonce, key);
   console.log(key)
-  browser.storage.local.set({ "nonce": nonce, "encrypted": encrypted });
+  chrome.storage.local.set({ "nonce": nonce, "encrypted": encrypted });
 }
 async function get_seed() {
   let password = document.getElementById("password").value;
   document.getElementById("password").value = "";
-  let key = browser.nacl.hash(string_to_uint8(password)).slice(32);
-  let nonce = await browser.storage.local.get("nonce");
-  let encrypted = await browser.storage.local.get("encrypted");
-  console.log(uint8_to_string(browser.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key)))
-  return uint8_to_string(browser.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key));
+  let key = chrome.nacl.hash(string_to_uint8(password)).slice(32);
+  let nonce = await chrome.storage.local.get("nonce");
+  let encrypted = await chrome.storage.local.get("encrypted");
+  console.log(uint8_to_string(chrome.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key)))
+  return uint8_to_string(chrome.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key));
 }
 function enter_new_seed() {
   document.getElementById("password-enter").style.display = "none";
   document.getElementById("seed-enter").style.display = "block";
-  browser.storage.local.remove(["nonce","encrypted"]);
+  chrome.storage.local.remove(["nonce","encrypted"]);
 }
 function discover_filter() {
   let divs = document.getElementsByClassName("discover-site-div");
