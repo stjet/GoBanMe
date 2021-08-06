@@ -100,8 +100,16 @@ async function send_banano(address, value) {
 function pay() {
   if (document.getElementById("pay").style.display == "block") {
     send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay").value));
+    document.getElementById("send-button").value = "SENT";
+    setTimeout(function(){
+      document.getElementById("send-button").value = "Send";
+    }, 2000);
   } else {
     send_banano(document.getElementById("true-address").innerText, Number(document.getElementById("pay-1").value));
+    document.getElementById("send-button").value = "SENT";
+    setTimeout(function(){
+      document.getElementById("send-button").value = "Send";
+    }, 2000);
   }
 }
 async function log_out() {
