@@ -26,7 +26,6 @@ browser.storage.local.get("encrypted").then((e) => {
   }
 });
 function get_info() {
-  console.log(seed);
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
     let https = false;
@@ -227,7 +226,6 @@ function store_seed() {
   let key = browser.nacl.hash(string_to_uint8(password)).slice(32);
   let nonce = browser.nacl.randomBytes(24);
   let encrypted = browser.nacl.secretbox(string_to_uint8(seed), nonce, key);
-  console.log(key)
   browser.storage.local.set({ "nonce": nonce, "encrypted": encrypted });
 }
 async function get_seed() {
@@ -236,7 +234,6 @@ async function get_seed() {
   let key = browser.nacl.hash(string_to_uint8(password)).slice(32);
   let nonce = await browser.storage.local.get("nonce");
   let encrypted = await browser.storage.local.get("encrypted");
-  console.log(uint8_to_string(browser.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key)))
   return uint8_to_string(browser.nacl.secretbox.open(encrypted.encrypted, nonce.nonce, key));
 }
 function enter_new_seed() {
@@ -255,7 +252,6 @@ function discover_filter() {
       divs[i].style.display = "none";
     }
     let type_div = document.getElementsByClassName(document.getElementById("types").value);
-    console.log(type_div)
     for (i=0; i < type_div.length; i++) {
       type_div[i].style.display = "block";
     }
