@@ -7,3 +7,5 @@ Docs at https://prussia.dev/docs/gobanme/index.html
 ![site info and tipping page](https://user-images.githubusercontent.com/49297268/127756962-c0170d2a-9ded-4a0f-a378-7ef3f43bbb26.png)
 
 Donate banano here: ban_1o7ija3mdbmpzt8qfnck583tn99fiupgbyzxtbk5h4g6j57a7rawge6yzxqp
+
+Download firefox version here: https://addons.mozilla.org/en-US/firefox/addon/gobanme/
