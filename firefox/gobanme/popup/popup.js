@@ -19,6 +19,8 @@ document.getElementById("rep-btn").onclick = change_rep;
 document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
 document.getElementById("types").onchange = discover_filter;
+document.getElementById("man-send-btn").onclick = manual_send;
+document.getElementById("problem-during-send").style.display = "none";
 browser.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
@@ -90,10 +92,19 @@ function display_amount() {
 function copy_address() {
   navigator.clipboard.writeText(document.getElementById("true-address").innerText);
 }
-async function send_banano(address, value) {
-  document.getElementById("balance-too-low").style.display = "none";
+async function send_banano(address, value, manual=false) {
+  //"manual" to false means being sent through site tipping screen. If true, its a wallet send to a different account
+  if (!manual) {
+    document.getElementById("balance-too-low").style.display = "none";
+  } else {
+    document.getElementById("problem-during-send").style.display = "none";
+  }
   await browser.bananocoinBananojs.sendBananoWithdrawalFromSeed(seed, 0, address, value).catch(err => {
-    document.getElementById("balance-too-low").style.display = "block";
+    if (!manual) {
+      document.getElementById("balance-too-low").style.display = "block";
+    } else {
+      document.getElementById("problem-during-send").style.display = "block";
+    }
   });
 }
 function pay() {
@@ -110,6 +121,16 @@ function pay() {
       document.getElementById("send-button").value = "Send";
     }, 2000);
   }
+}
+function manual_send() {
+  let to = document.getElementById("man_send_to").value;
+  let amount = document.getElementById("man_send_amount").value;
+  send_banano(to, amount, manual=true).then(() => {
+    document.getElementById("man-send-btn").value = "SENT";
+    setTimeout(function(){
+      document.getElementById("man-send-btn").value = "Send";
+    }, 2000);
+  });
 }
 async function log_out() {
   seed = undefined;

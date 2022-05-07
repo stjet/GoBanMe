@@ -52,9 +52,12 @@
       </div>
       <div id="wallet">
         <!--Change Reps, Accept Pending Deposits, Display own address-->
+        <span id="problem-during-send">Problem During Send</span>
         <p><span id="wallet-address"></span></p>
         <p><b>Balance: </b><span id="balance"></span></p>
         <label for="rep">Rep: </label><input type="text" id="rep"></input><input type="button" id="rep-btn" value="Change"></input>
+        <br>
+        <label for="man_send_to">Send To: </label><input type="text" id="man_send_to"></input><label for="man_send_amount">Amount: </label><input type="number" id="man_send_amount"></input><input type="button" id="man-send-btn" value="Send"></input>
         <br>
         <button id="recieve-pending">Recieve Pending Deposits</button>
       </div>

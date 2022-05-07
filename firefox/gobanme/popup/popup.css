@@ -43,7 +43,7 @@ body {
 .disabled{
   pointer-events: none;
 }
-#balance-too-low {
+#balance-too-low, #problem-during-send {
   color: red;
 }
 .tab {
