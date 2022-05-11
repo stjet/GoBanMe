@@ -20,6 +20,7 @@ document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
 document.getElementById("types").onchange = discover_filter;
 document.getElementById("man-send-btn").onclick = manual_send;
+document.getElementById('close-reopen').style.display = "none";
 document.getElementById("problem-during-send").style.display = "none";
 browser.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
@@ -30,6 +31,46 @@ browser.storage.local.get("encrypted").then((e) => {
 function get_info() {
   browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
+    //special integration for youtube
+    if (url.startsWith("https://www.youtube.com") && url.endsWith("/about")) {
+      document.getElementById('close-reopen').style.display = "block";
+      browser.tabs.executeScript(tabs_array[0].id, {file: "/content_scripts/integration.js"}).catch((e) => {
+        //document.getElementById('debug').innerText = e;
+      });
+      //check description
+      browser.tabs.sendMessage(tabs_array[0].id, {command: "youtube"}).then((address) => {
+        document.getElementById('close-reopen').style.display = "none";
+        //document.getElementById('debug').innerText = address;
+        if (!address) {
+          document.getElementById("tabs").style.display = "none";
+          document.getElementById("error-content").style.display = "block";
+          document.getElementById("site-info").style.display = "none";
+          document.getElementById("wallet").style.display = "none";
+          document.getElementById("discover").style.display = "none";
+          return
+        }
+        document.getElementById("tabs").style.display = "block";
+        document.getElementById("error-content").style.display = "none";
+        document.getElementById("site-info").style.display = "block";
+        document.getElementById("site-tab").classList.add("selected-tab");
+        document.getElementById("discover-tab").classList.add("unselected-tab");
+        document.getElementById("wallet-tab").classList.add("unselected-tab");
+        document.getElementById("wallet").style.display = "none";
+        document.getElementById("discover").style.display = "none";
+        document.getElementById("address").innerText = address.slice(0,9)+"..."+address.slice(-7);
+        document.getElementById("true-address").innerText = address;
+        document.getElementById("copy-address").onclick = copy_address;
+        document.getElementById("description").innerText = "Youtube channel";
+        document.getElementById("suggested-donation").innerText = "1";
+        document.getElementById("author").innerText = "Youtube channel";
+        document.getElementById("pay").style.display = 'block';
+        document.getElementById("pay-1").style.display = 'none';
+        document.getElementById("pay").value = 1;
+        document.getElementById("send-button").value = "Send 1 Banano";
+        return;
+      });
+      return;
+    }
     let https = false;
     if (tabs_array[0].url.startsWith("http://")) {
       url = url.replace("http://","");
@@ -47,6 +88,25 @@ function get_info() {
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4) {
         if (this.status == 200) {
+          //make sure it is valid json
+          let content;
+          try {
+            content = JSON.parse(this.responseText);
+            if (!content['address']) {
+              document.getElementById("tabs").style.display = "none";
+              document.getElementById("error-content").style.display = "block";
+              document.getElementById("site-info").style.display = "none";
+              document.getElementById("wallet").style.display = "none";
+              document.getElementById("discover").style.display = "none";
+            }
+          } catch (e) {
+            document.getElementById("tabs").style.display = "none";
+            document.getElementById("error-content").style.display = "block";
+            document.getElementById("site-info").style.display = "none";
+            document.getElementById("wallet").style.display = "none";
+            document.getElementById("discover").style.display = "none";
+            return;
+          }
           document.getElementById("tabs").style.display = "block";
           document.getElementById("error-content").style.display = "none";
           document.getElementById("site-info").style.display = "block";
@@ -55,7 +115,6 @@ function get_info() {
           document.getElementById("wallet-tab").classList.add("unselected-tab");
           document.getElementById("wallet").style.display = "none";
           document.getElementById("discover").style.display = "none";
-          let content = JSON.parse(this.responseText);
           document.getElementById("address").innerText = content['address'].slice(0,9)+"..."+content['address'].slice(-7);
           document.getElementById("true-address").innerText = content['address'];
           document.getElementById("copy-address").onclick = copy_address;
@@ -187,7 +246,7 @@ function switch_to_discover_tab() {
         }
       }
     }
-    xhttp.open("GET", "https://prussia.dev/api/gobanme.json", true);
+    xhttp.open("GET", "https://prussia.dev/api/gobanme.json?nocache="+new Date().getTime(), true);
     xhttp.send();
     already_discover = true;
   }
