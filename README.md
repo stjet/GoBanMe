@@ -8,4 +8,5 @@ Docs at https://prussia.dev/docs/gobanme/index.html
 
 Donate banano here: ban_1o7ija3mdbmpzt8qfnck583tn99fiupgbyzxtbk5h4g6j57a7rawge6yzxqp
 
-Download firefox version here: https://addons.mozilla.org/en-US/firefox/addon/gobanme/
+Download firefox version here: https://addons.mozilla.org/en-US/firefox/addon
+Download chromium version here: https://chrome.google.com/webstore/detail/gobanme/chcpbckfgpcogpgceecknjgcaicdonje
