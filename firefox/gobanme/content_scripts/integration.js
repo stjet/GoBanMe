@@ -3,7 +3,7 @@
   if (window.hasRun) {
     return false;
   }
-  window.hashRun = true;
+  window.hasRun = true;
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === "youtube") {
       let desc = document.getElementById('description-container').innerText;
