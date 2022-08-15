@@ -22,6 +22,13 @@ document.getElementById("types").onchange = discover_filter;
 document.getElementById("man-send-btn").onclick = manual_send;
 document.getElementById('close-reopen').style.display = "none";
 document.getElementById("problem-during-send").style.display = "none";
+
+document.getElementById("password").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    go2();
+  }
+});
+
 browser.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
