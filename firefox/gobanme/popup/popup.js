@@ -28,7 +28,6 @@ document.getElementById("password").addEventListener("keypress", function(e) {
     go2();
   }
 });
-
 browser.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
@@ -77,6 +76,12 @@ function get_info() {
         return;
       });
       return;
+    } else if (url.startsWith("https://www.youtube.com/watch")) {
+      browser.tabs.executeScript(tabs_array[0].id, {file: "/content_scripts/integration.js"}).catch((e) => {
+        //document.getElementById('debug').innerText = e;
+      });
+      //check description
+      browser.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"});
     }
     let https = false;
     if (tabs_array[0].url.startsWith("http://")) {

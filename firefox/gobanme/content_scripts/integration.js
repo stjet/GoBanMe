@@ -1,11 +1,12 @@
-//get banano addresses for selected sites
 (function() {
   if (window.hasRun) {
     return false;
   }
   window.hasRun = true;
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    alert(message.command)
     if (message.command === "youtube") {
+      //get banano addresses if in youtube /about description
       let desc = document.getElementById('description-container').innerText;
       let found_index = desc.indexOf("ban_");
       if (found_index === -1) {
@@ -27,6 +28,18 @@
         sendResponse(false);
         //sender.sendResponse({address: false});
       }
+    } else if (message.command === "youtube2") {
+      alert('a');
+      //add a "Enqueue on JTV" button
+      //gets video name, removing the " - Youtube"
+      let video_name = document.title.slice(0, -10);
+      alert(video_name);
+      //change the title
+      let title_ele = document.querySelector(".title.style-scope.ytd-video-primary-info-renderer");
+      alert(title_ele);
+      title_ele.innerHTML = video_name+" (<a target='_blank' href='https://jungletv.live/enqueue?url="+window.location.href+"'>Enqueue on JTV</a>)";
+      //dis probably not needed but im leaving it in
+      sendResponse("Success");
     }
   });
   return true;
