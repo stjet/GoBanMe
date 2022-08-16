@@ -22,7 +22,15 @@ document.getElementById("types").onchange = discover_filter;
 document.getElementById("man-send-btn").onclick = manual_send;
 document.getElementById('close-reopen').style.display = "none";
 document.getElementById("problem-during-send").style.display = "none";
-
+browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
+  if (tabs_array[0].url.startsWith("https://www.youtube.com/watch")) {
+    browser.tabs.executeScript(tabs_array[0].id, {file: "/content_scripts/integration.js"}).catch((e) => {
+      //document.getElementById('debug').innerText = e;
+    });
+    //check description
+    browser.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"});
+  }
+});
 document.getElementById("password").addEventListener("keypress", function(e) {
   if (e.key === "Enter") {
     go2();
@@ -76,17 +84,11 @@ function get_info() {
         return;
       });
       return;
-    } else if (url.startsWith("https://www.youtube.com/watch")) {
-      browser.tabs.executeScript(tabs_array[0].id, {file: "/content_scripts/integration.js"}).catch((e) => {
-        //document.getElementById('debug').innerText = e;
-      });
-      //check description
-      browser.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"});
     }
     let https = false;
-    if (tabs_array[0].url.startsWith("http://")) {
+    if (url.startsWith("http://")) {
       url = url.replace("http://","");
-    } else if (tabs_array[0].url.startsWith("https://")) {
+    } else if (url.startsWith("https://")) {
       url = url.replace("https://","");
       https = true;
     }

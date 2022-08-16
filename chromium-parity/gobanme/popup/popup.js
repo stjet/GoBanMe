@@ -19,6 +19,16 @@ document.getElementById("rep-btn").onclick = change_rep;
 document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
 document.getElementById("types").onchange = discover_filter;
+document.getElementById('close-reopen').style.display = "none";
+chrome.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
+  if (tabs_array[0].url.startsWith("https://www.youtube.com/watch")) {
+    chrome.scripting.executeScript({target: {tabId: tabs_array[0].id}, files: ["/content_scripts/integration.js"]}).catch((e) => {
+      //document.getElementById('debug').innerText = e;
+    });
+    //check description
+    chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"});
+  }
+});
 chrome.storage.local.get("encrypted").then((e) => {
   if (Object.keys(e).length != 0) {
     document.getElementById("password-enter").style.display = "block";
@@ -28,10 +38,56 @@ chrome.storage.local.get("encrypted").then((e) => {
 function get_info() {
   chrome.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
     let url = tabs_array[0].url;
+    if (url.startsWith("https://www.youtube.com") && url.endsWith("/about")) {
+      document.getElementById('close-reopen').style.display = "block";
+      chrome.scripting.executeScript({target: {tabId: tabs_array[0].id}, files: ["/content_scripts/integration.js"]}).catch((e) => {
+        //document.getElementById('debug').innerText = e;
+      });
+      //check description
+      chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube"}).then((address) => {
+        document.getElementById('close-reopen').style.display = "none";
+        //document.getElementById('debug').innerText = address;
+        if (!address) {
+          document.getElementById("tabs").style.display = "none";
+          document.getElementById("error-content").style.display = "block";
+          document.getElementById("site-info").style.display = "none";
+          document.getElementById("wallet").style.display = "none";
+          document.getElementById("discover").style.display = "none";
+          return
+        }
+        document.getElementById("tabs").style.display = "block";
+        document.getElementById("error-content").style.display = "none";
+        document.getElementById("site-info").style.display = "block";
+        document.getElementById("site-tab").classList.add("selected-tab");
+        document.getElementById("discover-tab").classList.add("unselected-tab");
+        document.getElementById("wallet-tab").classList.add("unselected-tab");
+        document.getElementById("wallet").style.display = "none";
+        document.getElementById("discover").style.display = "none";
+        document.getElementById("address").innerText = address.slice(0,9)+"..."+address.slice(-7);
+        document.getElementById("true-address").innerText = address;
+        document.getElementById("description").innerText = "Youtube channel";
+        document.getElementById("suggested-donation").innerText = "1";
+        document.getElementById("author").innerText = "Youtube channel";
+        document.getElementById("pay").style.display = 'block';
+        document.getElementById("pay-1").style.display = 'none';
+        document.getElementById("pay").value = 1;
+        document.getElementById("send-button").value = "Send 1 Banano";
+        return;
+      });
+      return;
+    }  else if (url.startsWith("https://www.youtube.com/watch")) {
+      chrome.scripting.executeScript({target: {tabId: tabs_array[0].id}, files: ["/content_scripts/integration.js"]}).catch((e) => {
+        document.getElementById('debug').innerText = e;
+      });
+      //check description
+      chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"}).catch(function(e) {
+        //document.getElementById("debug").innerText = e;
+      });
+    }
     let https = false;
-    if (tabs_array[0].url.startsWith("http://")) {
+    if (url.startsWith("http://")) {
       url = url.replace("http://","");
-    } else if (tabs_array[0].url.startsWith("https://")) {
+    } else if (url.startsWith("https://")) {
       url = url.replace("https://","");
       https = true;
     }

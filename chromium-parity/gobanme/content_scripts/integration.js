@@ -3,7 +3,7 @@
     return false;
   }
   window.hasRun = true;
-  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === "youtube") {
       //get banano addresses if in youtube /about description
       let desc = document.getElementById('description-container').innerText;
@@ -32,10 +32,11 @@
       //gets video name, removing the " - Youtube"
       let video_name = document.title.slice(0, -10);
       //change the title
-      let title_ele = document.querySelector(".title.style-scope.ytd-video-primary-info-renderer");
-      title_ele.innerHTML = video_name+" (<a target='_blank' href='https://jungletv.live/enqueue?url="+window.location.href+"'>Enqueue on JTV</a>)";
+      //edge and chrome
+      let title_ele = document.querySelector(".style-scope.ytd-watch-metadata#title");
+      title_ele.innerHTML = "<h1>"+video_name+" (<a target='_blank' href='https://jungletv.live/enqueue?url="+window.location.href+"'>Enqueue on JTV</a>)</h1>";
       //dis probably not needed but im leaving it in
-      sendResponse("Success");
+      sendResponse(true);
     }
   });
   return true;
