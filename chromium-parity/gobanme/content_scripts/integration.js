@@ -34,12 +34,15 @@
       //change the title
       //edge and chrome
       let title_ele = document.querySelector(".style-scope.ytd-watch-metadata#title");
-      title_ele.innerText = video_name+" ";
+      let real_title = document.createElement("h1");
+      real_title.innerText = video_name+" ";
       let link = document.createElement("a");
       link.href = "https://jungletv.live/enqueue?url="+window.location.href;
       link.target = "_blank";
       link.innerText = "(Enqueue on JTV)";
-      title_ele.appendChild(link);
+      real_title.appendChild(link);
+      title_ele.innerText = "";
+      title_ele.appendChild(real_title);
       //dis probably not needed but im leaving it in
       sendResponse(true);
     }
