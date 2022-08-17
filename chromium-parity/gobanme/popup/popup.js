@@ -26,7 +26,9 @@ chrome.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
       //document.getElementById('debug').innerText = e;
     });
     //check description
-    chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"});
+    chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"}).catch((e) => {
+      //
+    });
   }
 });
 chrome.storage.local.get("encrypted").then((e) => {
@@ -73,16 +75,10 @@ function get_info() {
         document.getElementById("pay").value = 1;
         document.getElementById("send-button").value = "Send 1 Banano";
         return;
+      }).catch((e) => {
+        //
       });
       return;
-    }  else if (url.startsWith("https://www.youtube.com/watch")) {
-      chrome.scripting.executeScript({target: {tabId: tabs_array[0].id}, files: ["/content_scripts/integration.js"]}).catch((e) => {
-        document.getElementById('debug').innerText = e;
-      });
-      //check description
-      chrome.tabs.sendMessage(tabs_array[0].id, {command: "youtube2"}).catch(function(e) {
-        //document.getElementById("debug").innerText = e;
-      });
     }
     let https = false;
     if (url.startsWith("http://")) {
