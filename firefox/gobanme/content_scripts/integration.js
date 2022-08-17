@@ -33,7 +33,12 @@
       let video_name = document.title.slice(0, -10);
       //change the title
       let title_ele = document.querySelector(".title.style-scope.ytd-video-primary-info-renderer");
-      title_ele.innerHTML = video_name+" (<a target='_blank' href='https://jungletv.live/enqueue?url="+window.location.href+"'>Enqueue on JTV</a>)";
+      title_ele.innerText = video_name+" ";
+      let link = document.createElement("a");
+      link.href = "https://jungletv.live/enqueue?url="+window.location.href;
+      link.target = "_blank";
+      link.innerText = "(Enqueue on JTV)";
+      title_ele.appendChild(link); 
       //dis probably not needed but im leaving it in
       sendResponse("Success");
     }
