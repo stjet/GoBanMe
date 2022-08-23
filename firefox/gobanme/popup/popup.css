@@ -12,7 +12,7 @@
 body {
   padding: 0px;
   margin: 0px;
-  height: 290px;
+  height: 345px;
   width: 240px;
   color: #2A2A2E;
 }
@@ -32,10 +32,10 @@ body {
   width: 90%;
 }
 #seed-enter {
-  margin-top: 105px;
+  padding-top: 105px;
 }
 #password-enter {
-  margin-top: 130px;
+  padding-top: 130px;
 }
 #go-button {
   border: none;
@@ -77,6 +77,10 @@ body {
   padding-left: 5px;
 }
 #discover-websites-list {
-  height: 198px;
   overflow: auto;
+}
+#wallet {
+  padding: 5px;
+  padding-top: 2px;
+  width: 95%;
 }

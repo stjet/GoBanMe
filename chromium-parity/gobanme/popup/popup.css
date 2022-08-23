@@ -80,3 +80,6 @@ body {
   height: 198px;
   overflow: auto;
 }
+#wallet {
+  padding: 5px;
+}

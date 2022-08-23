@@ -1,4 +1,16 @@
 browser.bananocoinBananojs.setBananodeApiUrl('https://kaliumapi.appditto.com/api');
+browser.storage.local.get("non_default_rpc").then((rpc_url) => {
+  //this is horribly confusing and inelegant but thats how browser.storage.local.get works apparently
+  //plus it works (?). dont touch it if so
+  if (rpc_url) {
+    rpc_url = rpc_url.non_default_rpc;
+    if (rpc_url) {
+      if (rpc_url.startsWith("http")) {
+        browser.bananocoinBananojs.setBananodeApiUrl(rpc_url);
+      }
+    }
+  }
+});
 let seed;
 let already_discover = false;
 document.getElementById("balance-too-low").style.display = "none";
@@ -205,6 +217,12 @@ function manual_send() {
     }, 2000);
   });
 }
+function change_rpc_url() {
+  let rpc_url = document.getElementById("rpc_url").value;
+  if (rpc_url.startsWith("http")) {
+    browser.storage.local.set({non_default_rpc: rpc_url});
+  }
+}
 async function log_out() {
   seed = undefined;
   await browser.storage.local.remove(["nonce","encrypted"]);
@@ -276,7 +294,9 @@ function switch_to_wallet_tab() {
   document.getElementById("site-info").style.display = "none";
   document.getElementById("discover").style.display = "none";
   browser.bananocoinBananojs.getBananoAccountFromSeed(seed, 0).then(async (current_address) => {
-    document.getElementById("wallet-address").innerText = current_address;
+    document.getElementById("wallet-address").innerText = current_address.slice(0,9)+"..."+current_address.slice(-7);
+    document.getElementById("wallet-address").href = "https://creeper.banano.cc/account/"+current_address;
+    document.getElementById("nft-link").href = "https://bannfts.prussiafan.club/account/"+current_address;
     let raw = await browser.bananocoinBananojs.getAccountBalanceRaw(current_address)
     let parts = await browser.bananocoinBananojs.getBananoPartsFromRaw(raw);
     document.getElementById("balance").innerText = parts.banano;

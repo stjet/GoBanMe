@@ -1,0 +1,11 @@
+#send-h, #change-h {
+  display: none;
+}
+
+#main {
+  padding: 10px;
+}
+
+#to-address-text, #amount-text {
+  display: none;
+}
