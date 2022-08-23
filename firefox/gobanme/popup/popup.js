@@ -32,6 +32,7 @@ document.getElementById("password-enter").style.display = "none";
 document.getElementById("new-seed-btn").onclick = enter_new_seed;
 document.getElementById("types").onchange = discover_filter;
 document.getElementById("man-send-btn").onclick = manual_send;
+document.getElementById("rpc-url-btn").onclick = change_rpc_url;
 document.getElementById('close-reopen').style.display = "none";
 document.getElementById("problem-during-send").style.display = "none";
 browser.tabs.query({active: true, currentWindow: true}).then((tabs_array) => {
@@ -221,6 +222,7 @@ function change_rpc_url() {
   let rpc_url = document.getElementById("rpc_url").value;
   if (rpc_url.startsWith("http")) {
     browser.storage.local.set({non_default_rpc: rpc_url});
+    document.getElementById("rpc_url").value = "";
   }
 }
 async function log_out() {
