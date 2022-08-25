@@ -2,7 +2,7 @@
 
   "manifest_version": 3,
   "name": "GoBanMe",
-  "version": "1.2.1",
+  "version": "1.3.1",
 
   "description": "Enables users to tip website owners banano",
   "homepage_url": "https://github.com/jetstream0/GoBanMe",
@@ -13,12 +13,30 @@
 
   "permissions": [
     "storage",
-    "scripting"
+    "scripting",
+    "system.display"
   ],
 
   "host_permissions": [
     "*://*/*"
   ],
+
+  "background": {
+    "service_worker": "background/messages.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_scripts/inject-wb.js"],
+      "run_at": "document_start"
+    }
+  ],
+
+  "web_accessible_resources": [{
+    "resources": ["web/window-banano.js"],
+    "matches": ["*://*/*"]
+  }],
 
   "action": {
     "default_icon": "icons/gobanme-32.png",

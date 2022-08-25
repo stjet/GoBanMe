@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self';"/>
+    <link rel="stylesheet" href="transaction.css"/>
+  </head>
+  <body>
+    <div id="main">
+      <center>
+        <p id="error-msg"></p>
+        <h1 id="send-h">Payment</h1>
+        <h1 id="change-h">Representative Change</h1>
+        <p>Request from <span id="req-site"></span></p>
+        <p id="to-address-text">To: <span id="to-address"></span></p>
+        <p id="amount-text">Amount: <span id="amount"></span></p>
+        <div id="auth-div">
+          <input type="password" id="password" placeholder="password"></input>
+        </div>
+        <br>
+        <button id="accept">Accept</button>
+        <br>
+        <button id="refuse">Refuse</button>
+      </center>
+    </div>
+    <script type="text/javascript" src="../../popup/banano.js"></script>
+    <script type="text/javascript" src="transaction.js"></script>
+  </body>
+</html>

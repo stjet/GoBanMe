@@ -51,14 +51,6 @@
         <input type="button" value="Send" id="send-button">
         <span id="balance-too-low">Not Enough Balance</span>
       </div>
-      <div id="wallet">
-        <!--Change Reps, Accept Pending Deposits, Display own address-->
-        <p><span id="wallet-address"></span></p>
-        <p><b>Balance: </b><span id="balance"></span></p>
-        <label for="rep">Rep: </label><input type="text" id="rep"></input><input type="button" id="rep-btn" value="Change"></input>
-        <br>
-        <button id="recieve-pending">Recieve Pending Deposits</button>
-      </div>
       <div id="discover">
         <!--Find participating websites-->
         <label for="types">Filter by: </label>
@@ -72,6 +64,30 @@
         </select>
         <br>
         <div id="discover-websites-list">
+        </div>
+      </div>
+      <div id="wallet">
+        <!--Change Reps, Accept Pending Deposits, Display own address-->
+        <p><a id="wallet-address" target="_blank"></a> (<a id="nft-link" target="_blank">NFTs</a>)</p>
+        <p><b>Balance: </b><span id="balance"></span></p>
+        <div class="wallet-func">
+          <label for="rep">Rep: </label><input type="text" id="rep"></input>
+          <input type="button" id="rep-btn" value="Change"></input>
+        </div>
+        <br>
+        <div class="wallet-func">
+          <label for="man_send_to">Send To: </label><input type="text" id="man_send_to"></input>
+          <label for="man_send_amount">Amount: </label><input type="number" id="man_send_amount"></input>
+          <input type="button" id="man-send-btn" value="Send"></input>
+        </div>
+        <br>
+        <div class="wallet-func">
+          <label for="rpc_url">New RPC: </label><input type="text" id="rpc_url"></input>
+          <input type="button" id="rpc-url-btn" value="Set"></input>
+        </div>
+        <br>
+        <div class="wallet-func">
+          <button id="recieve-pending">Recieve Pending Deposits</button>
         </div>
       </div>
     </div>
